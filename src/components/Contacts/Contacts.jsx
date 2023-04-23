@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import css from './Contacts.module.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { selectContacts, selectFilter } from 'redux/contactSlice';
-import { deleteContact } from 'redux/contactsOperations';
+import { deleteContact, fetchContacts } from 'redux/contactsOperations';
 
 export default function Contacts() {
     const contacts = useSelector(selectContacts);
@@ -13,6 +13,10 @@ export default function Contacts() {
         () => contacts.filter(contact => contact.name.toLowerCase().includes(filtering.trim().toLowerCase())),
         [contacts, filtering]
     );
+
+    useEffect(() => {
+        dispatch(fetchContacts())
+    }, [dispatch]);
 
     return (
         <ul className={css.contactList}>

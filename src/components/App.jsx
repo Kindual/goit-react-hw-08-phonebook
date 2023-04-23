@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Routes } from 'react-router-dom';
+import { NavLink, Route, Routes } from 'react-router-dom';
 // import ContactForm from './ContactForm/ContactForm'
 // import Contacts from './Contacts/Contacts';
 // import Filter from './Filter/Filter';
@@ -15,7 +15,12 @@ export default function App() {
 
   return (
     <>
-
+      <nav>
+        <NavLink to='/'>Home</NavLink>
+        <NavLink to='/contacts'>Contacts</NavLink>
+        
+        <NavLink to='/login'>Login</NavLink>
+      </nav>
 
       <Routes>
         <Route path='/' element={<HomePage />}></Route>
