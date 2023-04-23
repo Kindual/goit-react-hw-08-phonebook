@@ -19,7 +19,7 @@ export default function Contacts() {
             {filtered.length > 0 && filtered.map(contact =>
                 <li key={contact.id} className={css.contactItem}>
                     <p
-                        className={css.contactName}> {contact.name}: {contact.phone}</p>
+                        className={css.contactName}> {contact.name}: {contact.number}</p>
                     <button
                         type='button'
                         onClick={() => dispatch(deleteContact(contact.id))}

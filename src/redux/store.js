@@ -11,6 +11,7 @@ import {
     PURGE,
     REGISTER,
 } from 'redux-persist';
+import authSlice from './authSlice';
 
 const persistConfig = {
     key: 'contact',
@@ -22,6 +23,7 @@ const phonebookReducer = persistReducer(persistConfig, contactReducer)
 export const store = configureStore({
     reducer: {
         contact: phonebookReducer,
+        auth: authSlice,
     },
     middleware: getDefaultMiddleware =>
         getDefaultMiddleware({

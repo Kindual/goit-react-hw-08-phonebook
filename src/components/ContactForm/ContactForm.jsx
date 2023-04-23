@@ -15,7 +15,7 @@ export default function ContactForm() {
 
         const contact = {
             name: name.trim(),
-            phone: number.trim(),
+            number: number.trim(),
         }
         
         if (contacts.findIndex(cont => cont.name.trim().toLowerCase() === contact.name.trim().toLowerCase()) >= 0) {
