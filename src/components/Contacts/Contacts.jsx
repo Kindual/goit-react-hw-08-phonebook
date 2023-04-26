@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react'
-import css from './Contacts.module.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { selectContacts, selectFilter } from 'redux/contactSlice';
 import { deleteContact, fetchContacts } from 'redux/contactsOperations';
+import { List, ListItem, Button } from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons';
+// import Button from 'components/Button/Button';
 
 export default function Contacts() {
     const contacts = useSelector(selectContacts);
@@ -19,17 +21,23 @@ export default function Contacts() {
     }, [dispatch]);
 
     return (
-        <ul className={css.contactList}>
+
+        <List spacing={3} w='33%' mt={3}>
+
             {filtered.length > 0 && filtered.map(contact =>
-                <li key={contact.id} className={css.contactItem}>
-                    <p
-                        className={css.contactName}> {contact.name}: {contact.number}</p>
-                    <button
+
+                <ListItem key={contact.id} display='flex' alignItems='center' justifyContent='space-between'>
+                    <p> {contact.name}: {contact.number}</p>
+                    <Button colorScheme='gray'
+                        variant='ghost'
                         type='button'
                         onClick={() => dispatch(deleteContact(contact.id))}
-                        className={css.contactBtn}>Delete</button>
-                </li>
+
+                    ><DeleteIcon /></Button>
+
+                </ListItem>
             )}
-        </ul>
+        </List>
+
     )
 }

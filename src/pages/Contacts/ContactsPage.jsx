@@ -9,7 +9,7 @@ import { fetchContacts } from 'redux/contactsOperations'
 
 export default function ContactsPage() {
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+  const isLoggedIn = useSelector(state => state.isLoggedIn);
 
   useEffect(() => {
     isLoggedIn && dispatch(fetchContacts())

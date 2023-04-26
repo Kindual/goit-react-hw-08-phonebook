@@ -9,12 +9,17 @@ const getToken = (token) => {
 }
 
 export const authCurrent = createAsyncThunk('auth/current', async (_, thunkApi) => {
+    const { token } = thunkApi.getState().auth;
+    if (!token) return thunkApi.rejectWithValue('No token');
+
+    getToken(token);
     try {
         const response = await axios('/users/current');
         return response.data;
     } catch (error) {
         return thunkApi.rejectWithValue(error.message)
     }
+
 })
 
 export const logIn = createAsyncThunk('auth/login', async (user, thunkApi) => {
@@ -46,3 +51,21 @@ export const signup = createAsyncThunk('auth/signup', async (user, thunkApi) => 
         return thunkApi.rejectWithValue(error.message)
     }
 })
+
+export const refreshUser = createAsyncThunk(
+    'auth/refresh',
+    async (_, thunkApi) => {
+        const { token } = thunkApi.getState().auth;
+
+        if (!token) return;
+
+        getToken(token);
+        try {
+            const response = await axios('/users/current');
+            return response.data;
+        } catch (error) {
+            return thunkApi.rejectWithValue(error.message)
+        }
+
+    }
+)

@@ -1,34 +1,42 @@
-import React from 'react'
-import { NavLink, Route, Routes } from 'react-router-dom';
-// import ContactForm from './ContactForm/ContactForm'
-// import Contacts from './Contacts/Contacts';
-// import Filter from './Filter/Filter';
-// import Section from './Section/Section'
-// import { useDispatch } from 'react-redux';
-// import { fetchContacts } from 'redux/contactsOperations';
-import RegistrationPage from 'pages/Registration/RegistrationPage';
-import AuthorizationPage from 'pages/Authorization/AuthorizationPage';
-import ContactsPage from 'pages/Contacts/ContactsPage';
-import HomePage from 'pages/Home/HomePage';
+import React, { Suspense, lazy, useEffect } from 'react'
+import { Outlet, Route, Routes } from 'react-router-dom';
+import PrivateRoute from './PrivateRoute';
+import { useDispatch, useSelector } from 'react-redux';
+import PublicRoute from './PublicRoute';
+import { authCurrent } from 'redux/authOperation';
+import Header from './Header/Header';
+
+const HomePage = lazy(() => import('pages/Home/HomePage'));
+const ContactsPage = lazy(() => import('pages/Contacts/ContactsPage'));
+const RegistrationPage = lazy(() => import('pages/Registration/RegistrationPage'));
+const AuthorizationPage = lazy(() => import('pages/Authorization/AuthorizationPage'))
 
 export default function App() {
+  const isRefreshing = useSelector(state => state.auth.isRefreshing)
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(authCurrent())
+  }, [dispatch])
+
+  if (!isRefreshing) {
+    return
+  }
   return (
-    <>
-      <nav>
-        <NavLink to='/'>Home</NavLink>
-        <NavLink to='/contacts'>Contacts</NavLink>
-        
-        <NavLink to='/login'>Login</NavLink>
-      </nav>
+    <Suspense fallback={<p>Loading...</p>}>
+      <Header />
 
+      <Outlet/>
       <Routes>
         <Route path='/' element={<HomePage />}></Route>
-        <Route path='/signup' element={<RegistrationPage />}></Route>
-        <Route path='/login' element={<AuthorizationPage />}></Route>
-        <Route path='/contacts' element={<ContactsPage />}></Route>
+
+        <Route path='/signup' element={<PublicRoute component={<RegistrationPage />} />}></Route>
+        <Route path='/login' element={<PublicRoute component={<AuthorizationPage />} />}></Route>
+
+        <Route path='/contacts' element={<PrivateRoute component={<ContactsPage />} />} />
       </Routes>
 
-    </>
+
+    </Suspense>
   )
 }

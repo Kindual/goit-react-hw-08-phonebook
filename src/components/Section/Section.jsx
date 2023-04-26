@@ -4,12 +4,10 @@ import { PropTypes } from 'prop-types'
 
 export default function Section({ title = '', children }) {
   return (
-    <div>
       <section className={css.section}>
         {title && <h2 className={css.title}>{title}</h2>}
         {children}
       </section>
-    </div>
   )
 }
 
